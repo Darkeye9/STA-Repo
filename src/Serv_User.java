@@ -45,6 +45,8 @@ public class Serv_User extends HttpServlet {
 			datos.add(data);
 		}
 		
+		in.close();
+		
 		response.getWriter().write(
 				utils.html(
 						utils.head(
