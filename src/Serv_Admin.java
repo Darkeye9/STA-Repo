@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import modelos.Producto;
 import modelos.Productos;
@@ -55,11 +56,23 @@ public class Serv_Admin extends HttpServlet {
 		
 		response.setCharacterEncoding("UTF-8");
 		Map<String, String[]> params = request.getParameterMap();
+		JAXBContext jCtx;
 		
 		Date fecha = new Date();
 		Random rand = new Random();
 		
 		Productos prods = new Productos();
+		
+		try {
+			jCtx = JAXBContext.newInstance(Productos.class);
+			Unmarshaller umrs = jCtx.createUnmarshaller();
+			prods = (Productos) umrs.unmarshal(new File("BD.xml"));
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			response.getWriter().write("Error: "+e.getStackTrace().toString());
+			e.printStackTrace();
+			return;
+		}
 		
 		Producto prod = new Producto();
 		prod.setId(fecha.getTime()+Math.abs(rand.nextLong()));
@@ -69,10 +82,9 @@ public class Serv_Admin extends HttpServlet {
 		prod.setPrecio(Integer.parseInt(params.get("precio")[0]));
 		prods.getProductos().add(prod);
 		
-		JAXBContext jCtx;
+
 		
 		try {
-			jCtx = JAXBContext.newInstance(Productos.class);
 			Marshaller mrs = jCtx.createMarshaller();
 			mrs.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			mrs.marshal(prods, new File("BD.xml"));

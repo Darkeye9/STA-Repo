@@ -1,6 +1,7 @@
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +12,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import modelos.Producto;
+import modelos.Productos;
 
 /**
  * Servlet implementation class Serv_User
@@ -33,19 +40,30 @@ public class Serv_User extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		
-		BufferedReader in
-		   = new BufferedReader(new FileReader("bd.csv"));
-		
-		ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
-		
-		while (in.ready())
-		{
-			String line = in.readLine();
-			ArrayList<String> data = new ArrayList<String> (Arrays.asList(line.split(",")));
-			datos.add(data);
+		Productos prods = new Productos();
+		JAXBContext jCtx;
+		try {
+			jCtx = JAXBContext.newInstance(Productos.class);
+			Unmarshaller umrs = jCtx.createUnmarshaller();
+			prods = (Productos) umrs.unmarshal(new File("BD.xml"));
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			response.getWriter().write("Error: "+e.getStackTrace().toString());
+			e.printStackTrace();
+			return;
 		}
 		
-		in.close();
+		ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
+		for (Producto prod : prods.getProductos())
+		{
+			datos.add(new ArrayList<String>(Arrays.asList(
+					prod.getNombre(),
+					prod.getTipo(),
+					prod.getDesc(),
+					prod.getPrecio().toString(),
+					prod.getId().toString()
+					)));
+		}
 		
 		response.getWriter().write(
 				utils.html(
