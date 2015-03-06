@@ -1,5 +1,5 @@
 
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
@@ -10,6 +10,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+import modelos.Producto;
+import modelos.Productos;
 
 /**
  * Servlet implementation class Serv_Admin
@@ -46,23 +52,37 @@ public class Serv_Admin extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		response.setCharacterEncoding("UTF-8");
 		Map<String, String[]> params = request.getParameterMap();
 		
 		Date fecha = new Date();
 		Random rand = new Random();
 		
+		Productos prods = new Productos();
 		
-		FileWriter writer = new FileWriter("bd.csv", true);
-		writer.append((String)params.get("nombre")[0]+",");
-		writer.append((String)params.get("tipo")[0]+",");
-		writer.append((String)params.get("desc")[0]+",");
-		writer.append((String)params.get("precio")[0]+",");
-		writer.append(Long.toString(fecha.getTime()+Math.abs(rand.nextLong()))+"\n");
+		Producto prod = new Producto();
+		prod.setId(fecha.getTime()+Math.abs(rand.nextLong()));
+		prod.setNombre((String)params.get("nombre")[0]);
+		prod.setTipo((String)params.get("tipo")[0]);
+		prod.setDesc((String)params.get("desc")[0]);
+		prod.setPrecio(Integer.parseInt(params.get("precio")[0]));
+		prods.getProductos().add(prod);
+		
+		JAXBContext jCtx;
+		
+		try {
+			jCtx = JAXBContext.newInstance(Productos.class);
+			Marshaller mrs = jCtx.createMarshaller();
+			mrs.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			mrs.marshal(prods, new File("BD.xml"));
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			response.getWriter().write("Error: "+e.getStackTrace().toString());
+			e.printStackTrace();
+			return;
+		}
 
-		writer.flush();
-		writer.close();
-		
-		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(
 				utils.html(
 						utils.head(
