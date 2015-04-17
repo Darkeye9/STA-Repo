@@ -12,6 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -41,17 +46,8 @@ public class Serv_User extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		Productos prods = new Productos();
-		JAXBContext jCtx;
-		try {
-			jCtx = JAXBContext.newInstance(Productos.class);
-			Unmarshaller umrs = jCtx.createUnmarshaller();
-			prods = (Productos) umrs.unmarshal(new File("BD.xml"));
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			response.getWriter().write("Error: "+e.getStackTrace().toString());
-			e.printStackTrace();
-			return;
-		}
+		
+		prods = ClientBuilder.newClient().target("http://127.0.0.1:8080/Practica-STA/rest/user/prods").request(MediaType.APPLICATION_XML).get(Productos.class);		
 		
 		ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
 		for (Producto prod : prods.getProductos())
