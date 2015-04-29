@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Random;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
+
+import controladores.Tienda;
 
 @ManagedBean
 @RequestScoped
@@ -17,6 +17,9 @@ public class ProductoMBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Producto prod = new Producto();
 	private boolean correcto = false;
+	
+	@EJB
+	private Tienda tienda;
 
 	@Override
 	public String toString() {
@@ -28,11 +31,7 @@ public class ProductoMBean implements Serializable {
 		Random rand = new Random();
 		prod.setId(fecha.getTime() + Math.abs(rand.nextLong()));
 		
-		ClientBuilder
-		.newClient()
-		.target("http://127.0.0.1:8080/Practica-STA/rest/admin/add")
-		.request(MediaType.APPLICATION_XML)
-		.post(Entity.entity(getProd(), MediaType.APPLICATION_XML));
+		tienda.addProducto(prod);
 		
 		setCorrecto(true);
 	}

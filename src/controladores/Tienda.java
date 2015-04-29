@@ -1,15 +1,9 @@
 package controladores;
 
 import java.io.File;
-import java.util.Date;
-import java.util.Random;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -18,12 +12,10 @@ import javax.xml.bind.Unmarshaller;
 import modelos.Producto;
 import modelos.Productos;
 
-@Path("/admin")
-public class Admin {
+@Stateless
+@LocalBean
+public class Tienda {
 
-	@POST
-	@Path("/add")
-	@Produces(MediaType.APPLICATION_XML)
 	public String addProducto(Producto prod) {
 		
 		JAXBContext jCtx;
@@ -43,11 +35,27 @@ public class Admin {
 			
 			return "Articulo "+prod.getNombre()+" dado de Alta en "+prod.getTipo()+" con un precio de "+prod.getPrecio();
 			
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "";
 		}
 		
+	}
+	
+	public Productos getProductos() {
+		Productos prods = new Productos();
+		JAXBContext jCtx;
+		try {
+			jCtx = JAXBContext.newInstance(Productos.class);
+			Unmarshaller umrs = jCtx.createUnmarshaller();
+			prods = (Productos) umrs.unmarshal(new File("BD.xml"));
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Productos();
+		}
+		
+		return prods;
 	}
 }
