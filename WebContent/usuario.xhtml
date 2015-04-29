@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:composition template="templates/layout.xhtml">
+		<ui:define name="pageTitle">Venta de productos</ui:define>
+		<ui:define name="pageHeader">Bienvenido a la tienda Pepe</ui:define>
+		<ui:define name="pageContent">
+			<h2>Productos disponibles</h2>
+
+		<h:dataTable value="#{productosMBean.productos}" var="prod" border="2">
+			<h:column>
+				<f:facet name="header">Producto</f:facet>
+				<h:outputText value="#{prod.nombre}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Tipo</f:facet>
+				<h:outputText value="#{prod.tipo}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Descripción</f:facet>
+				<h:outputText value="#{prod.desc}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Precio</f:facet>
+				<h:outputText value="#{prod.precio}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Ref.</f:facet>
+				<h:outputText value="#{prod.id}" />
+			</h:column>
+		</h:dataTable>
+
+		<h:outputLink value="administrador.xhtml">Añadir nuevo producto</h:outputLink>
+	</ui:define>
+	</ui:composition>
+</html>
