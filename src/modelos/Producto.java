@@ -1,15 +1,45 @@
 package modelos;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
+import java.io.Serializable;
 
-@XmlRootElement
-public class Producto {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="producto")
+
+@NamedQueries({
+	@NamedQuery(name="Producto.findAll", query="SELECT o FROM Producto o")
+})
+public class Producto implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Column(name="nombre", nullable=false)
+	private String nombre;
+	
+	@Column(name="tipo", nullable=false)
+	private String tipo;
+	
+	@Column(name="descrip", nullable=false)
+	private String desc;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name="precio", nullable=false)
+	private Integer precio;
+	
 	/**
 	 * @return the nombre
 	 */
-	@XmlAttribute
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -22,8 +52,7 @@ public class Producto {
 	/**
 	 * @return the tipo
 	 */
-	
-	@XmlAttribute
+
 	public String getTipo() {
 		return tipo;
 	}
@@ -36,8 +65,7 @@ public class Producto {
 	/**
 	 * @return the desc
 	 */
-	
-	@XmlValue
+
 	public String getDesc() {
 		return desc;
 	}
@@ -50,7 +78,7 @@ public class Producto {
 	/**
 	 * @return the id
 	 */
-	@XmlAttribute
+
 	public Long getId() {
 		return id;
 	}
@@ -63,7 +91,7 @@ public class Producto {
 	/**
 	 * @return the precio
 	 */
-	@XmlAttribute
+
 	public Integer getPrecio() {
 		return precio;
 	}
@@ -73,7 +101,4 @@ public class Producto {
 	public void setPrecio(Integer precio) {
 		this.precio = precio;
 	}
-	private String nombre, tipo, desc;
-	private Long id;
-	private Integer precio;
 }

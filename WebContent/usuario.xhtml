@@ -10,7 +10,7 @@
 		<ui:define name="pageContent">
 			<h2>Productos disponibles</h2>
 
-		<h:dataTable value="#{productosMBean.productos}" var="prod" border="2">
+		<h:dataTable value="#{productoMBean.productoCtrl.productos}" var="prod" border="2">
 			<h:column>
 				<f:facet name="header">Producto</f:facet>
 				<h:outputText value="#{prod.nombre}" />
