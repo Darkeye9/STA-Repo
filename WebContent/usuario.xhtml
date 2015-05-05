@@ -8,9 +8,9 @@
 		<ui:define name="pageTitle">Venta de productos</ui:define>
 		<ui:define name="pageHeader">Bienvenido a la tienda Pepe</ui:define>
 		<ui:define name="pageContent">
-			<h2>Productos disponibles</h2>
+			<h2 class="ui header">Productos disponibles</h2>
 
-		<h:dataTable value="#{productoMBean.productoCtrl.productos}" var="prod" border="2">
+		<h:dataTable styleClass="ui striped table" value="#{productoMBean.productoCtrl.productos}" var="prod" border="2">
 			<h:column>
 				<f:facet name="header">Producto</f:facet>
 				<h:outputText value="#{prod.nombre}" />
@@ -33,7 +33,7 @@
 			</h:column>
 		</h:dataTable>
 
-		<h:outputLink value="administrador.xhtml">Añadir nuevo producto</h:outputLink>
+		<h:outputLink value="administrador.xhtml" styleClass="ui button primary">Añadir nuevo producto</h:outputLink>
 	</ui:define>
 	</ui:composition>
 </html>

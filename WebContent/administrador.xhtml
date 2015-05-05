@@ -1,48 +1,77 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
 
-	<ui:composition template="/templates/layout.xhtml">
+<ui:composition template="/templates/layout.xhtml">
 	<ui:define name="pageTitle">Administrador</ui:define>
-		<ui:define name="pageHeader">Añadir Producto</ui:define>
-		<ui:define name="pageContent">
-		<h:panelGroup rendered="#{productoMBean.correcto}">
-			<h:outputText
-				value="Articulo #{productoMBean.prod.nombre} introducido con exito en la categoria #{productoMBean.prod.tipo}, con precio #{productoMBean.prod.precio}," />
+	<ui:define name="pageHeader">Añadir Producto</ui:define>
+	<ui:define name="pageContent">
+		<h:panelGroup layout="block" rendered="#{productoMBean.correcto}"
+			styleClass="ui positive message">
+			<h:outputText styleClass="header"
+				value="Articulo #{productoMBean.prod.nombre} introducido con exito en la categoria #{productoMBean.prod.tipo}, con precio #{productoMBean.prod.precio}" />
 			<br />
-			<h:outputLink value="usuario.xhtml">Ver elementos añadidos</h:outputLink>
+			<h:outputLink value="usuario.xhtml" styleClass="ui button">Ver elementos añadidos</h:outputLink>
 		</h:panelGroup>
-			<h:form>
-				<h:outputLabel value="Nombre del producto:" />
-				<h:inputText id="nombre" required="true" value="#{productoMBean.prod.nombre}" requiredMessage="Se necesita de un nombre de producto"/>
-				<h:message for="nombre" />
-				<br />
-				<h:outputLabel value="Tipo del producto:" />
-				<h:selectOneMenu id="tipo" value="#{productoMBean.prod.tipo}" required="true" requiredMessage="Se necesita de una categoría de producto.">
-					<f:selectItem itemValue="instr" itemLabel="Instrumento"/>
-					<f:selectItem itemValue="elec" itemLabel="Electrónica"/>
-					<f:selectItem itemValue="audio" itemLabel="Audio"/>
-					<f:selectItem itemValue="soft" itemLabel="Software"/>
-				</h:selectOneMenu>
-				<h:message for="tipo" />
-				<br />
-				<h:outputLabel value="Descripción del producto: " required="true" requiredMessage="Se necesita de una descripción de producto." />
-       			<h:inputTextarea id="desc" value="#{productoMBean.prod.desc}" />
-       			<h:message for="desc" />
-				<br />
+		<h:form styleClass="ui form">
+			<div class="two fields">
+				<div class="required field">
+					<h:outputLabel value="Nombre del producto:" />
+					<h:inputText id="nombre" required="true"
+						value="#{productoMBean.prod.nombre}"
+						requiredMessage="Se necesita de un nombre de producto" />
+				</div>
+				<div class="required field">
+					<h:outputLabel value="Tipo del producto:" />
+					<h:selectOneMenu id="tipo" value="#{productoMBean.prod.tipo}"
+						required="true"
+						requiredMessage="Se necesita de una categoría de producto.">
+						<f:selectItem itemValue="instr" itemLabel="Instrumento" />
+						<f:selectItem itemValue="elec" itemLabel="Electrónica" />
+						<f:selectItem itemValue="audio" itemLabel="Audio" />
+						<f:selectItem itemValue="soft" itemLabel="Software" />
+					</h:selectOneMenu>
+
+				</div>
+			</div>
+			<div class="required field">
+				<h:outputLabel value="Descripción del producto: " required="true"
+					requiredMessage="Se necesita de una descripción de producto." />
+				<h:inputTextarea id="desc" value="#{productoMBean.prod.desc}" />
+
+			</div>
+
+			<div class="required field">
 				<h:outputLabel value="Precio del producto:" />
-				<h:inputText id="precio" required="true" value="#{productoMBean.prod.precio}" requiredMessage="Se necesita un precio de producto" validatorMessage="El precio no es válido">
-				<f:validateLongRange minimum="0" maximum="9999" />
-				</h:inputText> 
-				<h:message for="precio" />
-				<br />
-				<h:commandButton actionListener="#{productoMBean.add()}" id="submit" value="Enviar" />
-				<h:commandButton id="reset" type="reset" value="Borrar" />
-				<br />
-				<h:outputLink value="usuario.xhtml">Ir a el listado</h:outputLink>
-			</h:form>
-		</ui:define>
-	</ui:composition>
+				<h:inputText id="precio" required="true"
+					value="#{productoMBean.prod.precio}"
+					requiredMessage="Se necesita un precio de producto"
+					validatorMessage="El precio no es válido">
+					<f:validateLongRange minimum="0" maximum="9999" />
+				</h:inputText>
+
+			</div>
+
+			<h:panelGroup layout="block"
+				rendered="#{not empty facesContext.messageList}"
+				styleClass="ui negative message">
+				<div class="header">Se encontraron algunos errores en el
+					formulario</div>
+				<h:messages />
+			</h:panelGroup>
+
+			<h:commandButton styleClass="ui button primary"
+				actionListener="#{productoMBean.add()}" id="submit" value="Enviar" />
+			<h:commandButton styleClass="ui button" id="reset" type="reset"
+				value="Borrar" />
+			<br />
+			<div class="ui divider"></div>
+			<h:outputLink value="usuario.xhtml"
+				styleClass="ui left labeled icon button">
+				<i class="left arrow icon"></i>Ir a el listado</h:outputLink>
+		</h:form>
+	</ui:define>
+</ui:composition>
 </html>
