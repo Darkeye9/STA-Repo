@@ -2,76 +2,232 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="/templates/layout.xhtml">
 	<ui:define name="pageTitle">Administrador</ui:define>
-	<ui:define name="pageHeader">Añadir Producto</ui:define>
+	<ui:define name="pageHeader">Administrador</ui:define>
 	<ui:define name="pageContent">
-		<h:panelGroup layout="block" rendered="#{productoMBean.correcto}"
-			styleClass="ui positive message">
-			<h:outputText styleClass="header"
-				value="Articulo #{productoMBean.prod.nombre} introducido con exito en la categoria #{productoMBean.prod.tipo}, con precio #{productoMBean.prod.precio}" />
-			<br />
-			<h:outputLink value="usuario.xhtml" styleClass="ui button">Ver elementos añadidos</h:outputLink>
-		</h:panelGroup>
-		<h:form styleClass="ui form">
-			<div class="two fields">
-				<div class="required field">
-					<h:outputLabel value="Nombre del producto:" />
-					<h:inputText id="nombre" required="true"
-						value="#{productoMBean.prod.nombre}"
-						requiredMessage="Se necesita de un nombre de producto" />
-				</div>
-				<div class="required field">
-					<h:outputLabel value="Tipo del producto:" />
-					<h:selectOneMenu id="tipo" value="#{productoMBean.prod.tipo}"
-						required="true"
-						requiredMessage="Se necesita de una categoría de producto.">
-						<f:selectItem itemValue="instr" itemLabel="Instrumento" />
-						<f:selectItem itemValue="elec" itemLabel="Electrónica" />
-						<f:selectItem itemValue="audio" itemLabel="Audio" />
-						<f:selectItem itemValue="soft" itemLabel="Software" />
-					</h:selectOneMenu>
 
-				</div>
-			</div>
-			<div class="required field">
-				<h:outputLabel value="Descripción del producto: " required="true"
-					requiredMessage="Se necesita de una descripción de producto." />
-				<h:inputTextarea id="desc" value="#{productoMBean.prod.desc}" />
-
-			</div>
-
-			<div class="required field">
-				<h:outputLabel value="Precio del producto:" />
-				<h:inputText id="precio" required="true"
-					value="#{productoMBean.prod.precio}"
-					requiredMessage="Se necesita un precio de producto"
-					validatorMessage="El precio no es válido">
-					<f:validateLongRange minimum="0" maximum="9999" />
-				</h:inputText>
-
-			</div>
-
-			<h:panelGroup layout="block"
-				rendered="#{not empty facesContext.messageList}"
-				styleClass="ui negative message">
-				<div class="header">Se encontraron algunos errores en el
-					formulario</div>
-				<h:messages />
+		<div class="ui tabular menu">
+			<div class="active item" data-tab="productos">Productos</div>
+			<div class="item" data-tab="clientes">Clientes</div>
+			<div class="item" data-tab="pedidos">Pedidos</div>
+		</div>
+		<div class="ui active tab" data-tab="productos">
+			<h:panelGroup layout="block" rendered="#{productoMBean.estado != ''}"
+				styleClass="ui positive message">
+				<h:outputText styleClass="header"
+					value="#{productoMBean.estado}" />
 			</h:panelGroup>
 
-			<h:commandButton styleClass="ui button primary"
-				actionListener="#{productoMBean.add()}" id="submit" value="Enviar" />
-			<h:commandButton styleClass="ui button" id="reset" type="reset"
-				value="Borrar" />
-			<br />
+			<h:form>
+				<h3 class="ui dividing header">Lista de productos disponibles</h3>
+				<h:dataTable styleClass="ui striped table"
+					value="#{productoMBean.prods}" var="prod" border="2">
+					<h:column>
+						<f:facet name="header">Producto</f:facet>
+						<h:outputText value="#{prod.nombre}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Tipo</f:facet>
+						<h:outputText value="#{prod.tipo}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Descripción</f:facet>
+						<h:outputText value="#{prod.desc}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Precio</f:facet>
+						<h:outputText value="#{prod.precio}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Ref.</f:facet>
+						<h:outputText value="#{prod.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Operación</f:facet>
+						<h:commandButton id="submit" styleClass="negative ui button"
+							actionListener="#{productoMBean.delProd(prod.id)}"
+							value="Eliminar"></h:commandButton>
+					</h:column>
+				</h:dataTable>
+			</h:form>
+			<h3 class="ui dividing header">Añadir nuevo producto</h3>
+			<h:form styleClass="ui form">
+				<div class="two fields">
+					<div class="required field">
+						<h:outputLabel value="Nombre del producto:" />
+						<h:inputText required="true" value="#{productoMBean.prod.nombre}"
+							requiredMessage="Se necesita de un nombre de producto"
+							pt:placeholder="Ej.: Guitarra Les Paul Classic" />
+					</div>
+					<div class="required field">
+						<h:outputLabel value="Tipo del producto:" />
+						<h:selectOneMenu value="#{productoMBean.prod.tipo}"
+							required="true"
+							requiredMessage="Se necesita de una categoría de producto.">
+							<f:selectItem itemValue="instr" itemLabel="Instrumento" />
+							<f:selectItem itemValue="elec" itemLabel="Electrónica" />
+							<f:selectItem itemValue="audio" itemLabel="Audio" />
+							<f:selectItem itemValue="soft" itemLabel="Software" />
+						</h:selectOneMenu>
+
+					</div>
+				</div>
+				<div class="required field">
+					<h:outputLabel value="Descripción del producto: " required="true"
+						requiredMessage="Se necesita de una descripción de producto."
+						pt:placeholder="Ej.: Una gran guitarra con mucha historia..." />
+					<h:inputTextarea value="#{productoMBean.prod.desc}" />
+
+				</div>
+
+				<div class="required field">
+					<h:outputLabel value="Precio del producto:" />
+					<h:inputText required="true" value="#{productoMBean.prod.precio}"
+						requiredMessage="Se necesita un precio de producto"
+						validatorMessage="El precio no es válido" pt:placeholder="1560">
+						<f:validateLongRange minimum="0" maximum="9999" />
+					</h:inputText>
+
+				</div>
+
+				<h:panelGroup layout="block"
+					rendered="#{not empty facesContext.messageList}"
+					styleClass="ui negative message">
+					<div class="header">Se encontraron algunos errores en el
+						formulario</div>
+					<h:messages />
+				</h:panelGroup>
+
+				<h:commandButton styleClass="ui button primary"
+					actionListener="#{productoMBean.add()}" value="Enviar" />
+				<h:commandButton styleClass="ui button" type="reset" value="Borrar" />
+				<br />
+				<div class="ui divider"></div>
+				<h:outputLink value="usuario.xhtml"
+					styleClass="ui left labeled icon button">
+					<i class="left arrow icon"></i>Ir a el listado</h:outputLink>
+			</h:form>
+		</div>
+		<div class="ui tab" data-tab="clientes">
+			<h:panelGroup layout="block" rendered="#{clienteMBean.estado != ''}"
+				styleClass="ui positive message">
+				<h:outputText styleClass="header"
+					value="#{clienteMBean.estado}" />
+			</h:panelGroup>
+
+			<h:form>
+				<h3 class="ui dividing header">Lista de clientes</h3>
+				<h:dataTable styleClass="ui striped table"
+					value="#{clienteMBean.clientes}" var="cliente" border="2">
+					<h:column>
+						<f:facet name="header">Nombre</f:facet>
+						<h:outputText value="#{cliente.nombre}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">DNI</f:facet>
+						<h:outputText value="#{cliente.dni}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Password</f:facet>
+						<h:outputText value="#{cliente.password}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Operaciones</f:facet>
+						<h:commandButton styleClass="negative ui button"
+							actionListener="#{clienteMBean.delCliente(cliente.dni)}"
+							value="Eliminar"></h:commandButton>
+					</h:column>
+				</h:dataTable>
+			</h:form>
+			<h3 class="ui dividing header">Añadir Cliente</h3>
+			<h:form styleClass="ui form">
+				<div class="two fields">
+					<div class="required field">
+						<h:outputLabel value="Nombre:" />
+						<h:inputText required="true"
+							value="#{clienteMBean.cliente.nombre}"
+							requiredMessage="Se necesita un nombre de cliente"
+							pt:placeholder="Ej.: Ramón Martinez" />
+					</div>
+					<div class="required field">
+						<h:outputLabel value="DNI:" />
+						<h:inputText required="true" value="#{clienteMBean.cliente.dni}"
+							requiredMessage="Se necesita un DNI de cliente"
+							pt:placeholder="Ej.: XXXXXXXXZ" />
+					</div>
+				</div>
+					<div class="required field">
+						<h:outputLabel value="Contraseña:" />
+						<h:inputText required="true"
+							value="#{clienteMBean.cliente.password}"
+							requiredMessage="Se necesita un password de cliente"
+							pt:placeholder="Ej.: 12345678" />
+					</div>
+
+				<h:panelGroup layout="block"
+					rendered="#{not empty facesContext.messageList}"
+					styleClass="ui negative message">
+					<div class="header">Se encontraron algunos errores en el
+						formulario</div>
+					<h:messages />
+				</h:panelGroup>
+
+				<h:commandButton styleClass="ui button primary"
+					actionListener="#{clienteMBean.addCliente()}" value="Enviar" />
+				<h:commandButton styleClass="ui button" type="reset" value="Borrar" />
+				<br />
+				<div class="ui divider"></div>
+				<h:outputLink value="usuario.xhtml"
+					styleClass="ui left labeled icon button">
+					<i class="left arrow icon"></i>Ir a el listado</h:outputLink>
+			</h:form>
+		</div>
+
+		<div class="ui tab" data-tab="pedidos">
+
+			<h:form>
+				<h3 class="ui dividing header">Lista de pedidos</h3>
+				<h:dataTable styleClass="ui striped table"
+					value="#{pedidoMBean.pedidos}" var="pedido" border="2">
+					<h:column>
+						<f:facet name="header">Referencia</f:facet>
+						<h:outputText value="#{pedido.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Cliente</f:facet>
+						<h:outputText value="#{pedido.cliente.dni}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Producto</f:facet>
+						<h:outputText value="#{pedido.producto.nombre}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Estado</f:facet>
+						<h:outputText value="#{pedido.state}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Operaciones</f:facet>
+						<h:commandButton styleClass="negative ui button"
+							actionListener="#{pedidoMBean.delPedido(pedido.id)}"
+							value="Eliminar"></h:commandButton>
+					</h:column>
+				</h:dataTable>
+			</h:form>
+			
 			<div class="ui divider"></div>
-			<h:outputLink value="usuario.xhtml"
-				styleClass="ui left labeled icon button">
-				<i class="left arrow icon"></i>Ir a el listado</h:outputLink>
-		</h:form>
+				<h:outputLink value="usuario.xhtml"
+					styleClass="ui left labeled icon button">
+					<i class="left arrow icon"></i>Ir a el listado</h:outputLink>
+		</div>
+
+
+		<script type="text/javascript">
+		$('.tabular.menu .item').tab();
+	</script>
 	</ui:define>
 </ui:composition>
 </html>

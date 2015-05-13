@@ -1,7 +1,9 @@
 package modelos;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,6 +38,9 @@ public class Producto implements Serializable {
 	
 	@Column(name="precio", nullable=false)
 	private Integer precio;
+	
+	@OneToMany(mappedBy="producto", cascade=CascadeType.ALL)
+	private List<Pedido> pedidos;
 	
 	/**
 	 * @return the nombre
@@ -100,5 +106,9 @@ public class Producto implements Serializable {
 	 */
 	public void setPrecio(Integer precio) {
 		this.precio = precio;
+	}
+	@Override
+	public String toString() {
+		return "Articulo "+this.nombre+" introducido con exito en la categoria "+this.tipo+", con precio "+this.precio;
 	}
 }

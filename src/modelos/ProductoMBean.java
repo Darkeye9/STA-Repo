@@ -1,42 +1,40 @@
 package modelos;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import controladores.ProductoEJB;
+import controladores.BDEJB;
 
 @ManagedBean
 @RequestScoped
 public class ProductoMBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private boolean correcto = false;
+	private String estado = "";
 
 	@EJB
-	private ProductoEJB productoCtrl;
+	private BDEJB bdEJB;
 	
 	private Producto prod= new Producto();
+	private List<Producto> prods;
 
 	public void add() {
 		
-		getProductoCtrl().addProducto(prod);
-		
-		setCorrecto(true);
+		bdEJB.addProducto(prod);
+		estado = prod.toString();
 	}
 
-
-	public boolean isCorrecto() {
-		return correcto;
+	public String getEstado() {
+		return estado;
 	}
 
-
-	public void setCorrecto(boolean correcto) {
-		this.correcto = correcto;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
-
 
 	public Producto getProd() {
 		return prod;
@@ -47,13 +45,18 @@ public class ProductoMBean implements Serializable {
 		this.prod = prod;
 	}
 
-
-	public ProductoEJB getProductoCtrl() {
-		return productoCtrl;
+	public List<Producto> getProds() {
+		prods = bdEJB.getProductos();
+		return prods;
 	}
 
 
-	public void setProductoCtrl(ProductoEJB productoCtrl) {
-		this.productoCtrl = productoCtrl;
+	public void setProds(List<Producto> prods) {
+		this.prods = prods;
+	}	
+	
+	public void delProd(Long id)
+	{
+		bdEJB.delProducto(id);
 	}
 }
