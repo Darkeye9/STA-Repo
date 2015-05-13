@@ -9,8 +9,16 @@
 		<ui:define name="pageHeader">Bienvenido a la tienda Pepe</ui:define>
 		<ui:define name="pageContent">
 			<h2 class="ui header">Productos disponibles</h2>
-
-		<h:dataTable styleClass="ui striped table" value="#{productoMBean.productoCtrl.productos}" var="prod" border="2">
+		
+		<h:panelGroup layout="block"
+					rendered="#{pedidoMBean.estado != ''}"
+					styleClass="ui message">
+					<div class="header">Mensaje del sistema</div>
+					<h:outputText value="#{pedidoMBean.estado}"></h:outputText>
+				</h:panelGroup>
+		
+		<h:form styleClass="ui form">
+		<h:dataTable styleClass="ui striped table" value="#{productoMBean.prods}" var="prod" border="2">
 			<h:column>
 				<f:facet name="header">Producto</f:facet>
 				<h:outputText value="#{prod.nombre}" />
@@ -31,9 +39,43 @@
 				<f:facet name="header">Ref.</f:facet>
 				<h:outputText value="#{prod.id}" />
 			</h:column>
+			<h:column>
+				<f:facet name="header">Ref.</f:facet>
+				<h:outputText value="#{prod.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Operaciones</f:facet>
+				<h:commandButton styleClass="ui button"
+					actionListener="#{pedidoMBean.addPedido(clienteMBean.cliente.dni, clienteMBean.cliente.password, prod.id)}"
+					value="Comprar"></h:commandButton>
+			</h:column>
 		</h:dataTable>
 
-		<h:outputLink value="administrador.xhtml" styleClass="ui button primary">Añadir nuevo producto</h:outputLink>
+			<div class="ui two fields">
+				<div class="required field">
+					<h:outputLabel value="DNI:" />
+						<h:inputText required="true"
+							value="#{clienteMBean.cliente.dni}"
+							requiredMessage="Se necesita un DNI de cliente"/>
+				</div>
+				<div class="required field">
+					<h:outputLabel value="Contraseña:" />
+						<h:inputText required="true"
+							value="#{clienteMBean.cliente.password}"
+							requiredMessage="Se necesita una contraseña de cliente"/>
+				</div>
+			</div>
+			
+			<h:panelGroup layout="block"
+					rendered="#{not empty facesContext.messageList}"
+					styleClass="ui negative message">
+					<div class="header">Se encontraron algunos errores en el
+						formulario</div>
+					<h:messages />
+				</h:panelGroup>
+		</h:form>
+
+		<h:outputLink value="administrador.xhtml" styleClass="ui button primary">Ir a la administración</h:outputLink>
 	</ui:define>
 	</ui:composition>
 </html>
