@@ -17,4 +17,4 @@ ejecutar cada una de ellas. _(Configuraciones de WildFly/Apache a parte)_
 * Práctica 5: [JSF y EJB](https://github.com/Darkeye9/STA-Repo/tree/Pra5)
 * Práctica 6: [JPA](https://github.com/Darkeye9/STA-Repo/tree/Pra6)
 * Práctica 6.1: [Interfaz mejorada](https://github.com/Darkeye9/STA-Repo/tree/Pra6-Mejorada)
-* Práctica 7: [Interfaz mejorada](https://github.com/Darkeye9/STA-Repo/tree/Pra7)
+* Práctica 7: [Entidades Relacionadas](https://github.com/Darkeye9/STA-Repo/tree/Pra7)
