@@ -18,3 +18,5 @@ ejecutar cada una de ellas. _(Configuraciones de WildFly/Apache a parte)_
 * Práctica 6: [JPA](https://github.com/Darkeye9/STA-Repo/tree/Pra6)
 * Práctica 6.1: [Interfaz mejorada](https://github.com/Darkeye9/STA-Repo/tree/Pra6-Mejorada)
 * Práctica 7: [Entidades Relacionadas](https://github.com/Darkeye9/STA-Repo/tree/Pra7)
+* Examen Julio 2013: [Tienda con carrito](https://github.com/Darkeye9/STA-Repo/tree/ExamenJul13)
+* Examen Mayo 2014: [Aplicación de notas de alumnos](https://github.com/Darkeye9/STA-Repo/tree/ExamenMay14)
