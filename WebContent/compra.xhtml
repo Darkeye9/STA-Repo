@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="templates/main.xhtml">
+	<ui:define name="title">Tramitar Compra</ui:define>
+	<ui:define name="header">Tienda B - Tramitar compra</ui:define>
+	<ui:define name="content">
+	
+	<h:panelGroup style="block" rendered="#{cestaMBean.mensaje != ''}">
+		<h:outputText value="#{cestaMBean.mensaje}" />
+	</h:panelGroup>
+		<h2>Información de Pago</h2>
+		<h:form>
+			<h:outputLabel value="Nombre:" />
+			<h:inputText id="nombre" required="true" requiredMessage="Hace falta un nombre" value="#{pedidoMBean.pedido.nombre}" />
+			<h:message for="nombre"/><br />
+			
+			<h:outputLabel value="DNI:" />
+			<h:inputText id="dni" required="true" requiredMessage="Hace falta un DNI" value="#{pedidoMBean.pedido.dni}" />
+			<h:message for="dni"/><br />
+			
+			<h:outputLabel value="Dirección" />
+			<h:inputText id="dir" required="true" requiredMessage="Hace falta una direccion" value="#{pedidoMBean.pedido.direccion}" />
+			<h:message for="dir"/><br />
+			
+			<h4>Total a pagar: <h:outputText value="#{cestaMBean.total}" />€</h4>
+			<h:commandButton actionListener="#{cestaMBean.addPedido(pedidoMBean.pedido.nombre,pedidoMBean.pedido.dni,pedidoMBean.pedido.direccion)}" value="Finalizar Compra" />
+		</h:form>
+		<h:outputLink value="carrito.xhtml">Ver el carrito</h:outputLink>
+	</ui:define>
+</ui:composition>
+</html>

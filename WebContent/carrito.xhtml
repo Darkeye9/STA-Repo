@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:composition template="templates/main.xhtml">
+	<ui:define name="title">Carrito de la compra</ui:define>
+	<ui:define name="header">Tienda B - Carrito de la compra</ui:define>
+	<ui:define name="content">
+		<h2>Productos añadidos</h2>
+		<h:dataTable value="#{cestaMBean.productos}" var="producto" border="3">
+			<h:column>
+				<f:facet name="header">Nombre</f:facet>
+				<h:outputText value="#{producto.nombre}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Descripción</f:facet>
+				<h:outputText value="#{producto.descripcion}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Categoría</f:facet>
+				<h:outputText value="#{producto.categoria}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Precio</f:facet>
+				<h:outputText value="#{producto.precio}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Cantidad</f:facet>
+				<h:outputText value="#{producto.stock}" />
+			</h:column>
+		</h:dataTable>
+		<h5>Total de su compra: <h:outputText value="#{cestaMBean.total}" /></h5>
+		<h:outputLink value="tienda.xhtml">Volver a comprar a la tienda</h:outputLink><br />
+		<h:outputLink value="compra.xhtml">Procesar la compra</h:outputLink>
+	</ui:define>
+	</ui:composition>
+</html>
