@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:composition template="templates/main.xhtml">
+	<ui:define name="title">Usuario</ui:define>
+	<ui:define name="header">Bienvenido Usuario</ui:define>
+	<ui:define name="content">
+		<h2>Consultar tus notas</h2>
+		<h3>Introduce tus datos</h3>
+		<h:form>
+			<h:outputLabel value="DNI:" />
+			<h:inputText value="#{alumnoMBean.alumno.dni}" />
+			<h:commandButton actionListener="#{notaMBean.notaUser(alumnoMBean.alumno.dni)}" value="Buscar" />
+		</h:form>
+		
+		<h:panelGroup rendered="#{notaMBean.notasUserB}">
+			<h3>Tus notas</h3>
+			<h:form>
+				<h:dataTable value="#{notaMBean.notasUser}" var="nota" border="3">
+				<h:column>
+					<f:facet name="header">Asignatura</f:facet>
+					<h:outputText value="#{nota.asignaturaBean.nombre}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Nota</f:facet>
+					<h:outputText value="#{nota.nota}" />
+				</h:column>
+				
+				</h:dataTable>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+	</ui:composition>
+</html>

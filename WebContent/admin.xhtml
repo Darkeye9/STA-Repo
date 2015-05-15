@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:composition template="templates/main.xhtml">
+	<ui:define name="title">Admin del colegio</ui:define>
+	<ui:define name="header">Administración</ui:define>
+	<ui:define name="content">
+	<h2>Gestión de Alumnos</h2>
+		<h4>Alumnos matriculados</h4>
+		<h:form>
+		<h:dataTable value="#{alumnoMBean.alumnos}" var="alumno" border="3">
+			<h:column>
+				<f:facet name="header">Nombre</f:facet>
+				<h:outputText value="#{alumno.nombre}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Apellidos</f:facet>
+				<h:outputText value="#{alumno.apellidos}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">DNI</f:facet>
+				<h:outputText value="#{alumno.dni}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">OPS</f:facet>
+				<h:commandButton actionListener="#{alumnoMBean.delAlumno(alumno.dni)}" value="Eliminar" />
+			</h:column>
+		</h:dataTable>
+		</h:form>
+		
+		<h:form>
+			<h4>Añadir nuevo alumno</h4>
+			<h:outputLabel value="Nombre:" />
+			<h:inputText value="#{alumnoMBean.alumno.nombre}" /><br />
+			
+			<h:outputLabel value="Apellidos:" />
+			<h:inputText value="#{alumnoMBean.alumno.apellidos}" /><br />
+			
+			<h:outputLabel value="DNI:" />
+			<h:inputText value="#{alumnoMBean.alumno.dni}" /><br />
+			
+			<h:commandButton actionListener="#{alumnoMBean.addAlumno()}" value="Guardar" />
+		</h:form>
+		
+		
+	<h2>Gestión de Asignaturas</h2>
+		<h4>Asignaturas disponibles</h4>
+		<h:form>
+		<h:dataTable value="#{asignaturaMBean.asignaturas}" var="asignatura" border="3">
+			<h:column>
+				<f:facet name="header">Nombre</f:facet>
+				<h:outputText value="#{asignatura.nombre}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">OPS</f:facet>
+				<h:commandButton actionListener="#{asignaturaMBean.delAsignatura(asignatura.idAsignatura)}" value="Eliminar" />
+			</h:column>
+		</h:dataTable>
+		</h:form>
+		
+		<h:form>
+			<h4>Añadir nueva asignatura</h4>
+			<h:outputLabel value="Nombre:" />
+			<h:inputText value="#{asignaturaMBean.asignatura.nombre}" /><br />
+			
+			<h:commandButton actionListener="#{asignaturaMBean.addAsignatura()}" value="Guardar" />
+		</h:form>
+		
+		
+	<h2>Gestión de Notas</h2>
+		<h4>Notas registradas</h4>
+		<h:form>
+		<h:dataTable value="#{notaMBean.notas}" var="nota" border="3">
+			<h:column>
+				<f:facet name="header">Alumno</f:facet>
+				<h:outputText value="#{nota.alumnoBean.nombre}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Asignatura</f:facet>
+				<h:outputText value="#{nota.asignaturaBean.nombre}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Nota</f:facet>
+				<h:outputText value="#{nota.nota}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">OPS</f:facet>
+				<h:commandButton actionListener="#{notaMBean.delNota(nota.idNota)}" value="Eliminar" />
+			</h:column>
+		</h:dataTable>
+		</h:form>
+		
+		<h:form>
+			<h4>Añadir nueva nota</h4>
+			<h:outputLabel value="DNI alumno:" />
+			<h:inputText value="#{alumnoMBean.alumno.dni}" /><br />
+			
+			<h:outputLabel value="ID Asignatura:" />
+			<h:inputText value="#{asignaturaMBean.asignatura.idAsignatura}" /><br />
+			
+			<h:outputLabel value="Nota" />
+			<h:inputText value="#{notaMBean.nota.nota}" /><br />
+			
+			<h:commandButton actionListener="#{notaMBean.addNota(alumnoMBean.alumno.dni, asignaturaMBean.asignatura.idAsignatura, notaMBean.nota.nota)}" value="Guardar" />
+		</h:form>
+		
+		
+	</ui:define>
+	</ui:composition>
+</html>
